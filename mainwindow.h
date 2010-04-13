@@ -34,13 +34,14 @@ private:
     void addUrl(QUrl url);
     bool validUrl(QString url);
     void createActions();
-    void deleteUrl(QUrl url);
 
     QAction *deleteAct;
     QAction *updateAct;
+    QAction* quitAction;
 
     QMenu *menu;
     QTimer *timer;
+    QMenu* trayIconMenu;
 
     QSqlQuery *query;
     QSqlDatabase db;
@@ -51,15 +52,16 @@ private:
     QUrl url;
     QString feed;
     QSystemTrayIcon* trayIcon;
-    QAction* quitAction;
-    QMenu* trayIconMenu;
     QProgressDialog* progressDialog;
 
+    bool showUnreadAndReadFeeds;
+
     void showErrorMessageAndCloseProgressDialog();
+    void createTrayIcon();
+    void showSystemTrayIconMessage();
 
 private slots:
     void on_searchButton_clicked();
-    void on_deleteButton_clicked();
     void on_treeWidget_itemClicked(QTreeWidgetItem* item, int column);
     void on_addButton_clicked();
     void readData(const QHttpResponseHeader &resp);
@@ -69,6 +71,9 @@ private slots:
     void updateRss();
     void downloadFeedProgress(int done, int total);
     void showContextMenu(QPoint eventPosition);
+    void deleteFeed();
+    void showAllFeeds();
+    void showOnlyUnreadFeeds();
 };
 
 #endif // MAINWINDOW_H
