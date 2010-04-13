@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#define UPDATE_FREQUENCY 3000000
 #include <QMainWindow>
 #include <QModelIndex>
 #include <QSqlQuery>
@@ -27,38 +28,40 @@ protected:
     void closeEvent(QCloseEvent *event);
 
 private:
-    Ui::MainWindow *ui;
     bool createConnection();
     void setupDatabase();
     void updateTreeview();
     void addUrl(QUrl url);
     bool validUrl(QString url);
     void createActions();
-
-    QAction *deleteAct;
-    QAction *updateAct;
-    QAction* quitAction;
-
-    QMenu *menu;
-    QTimer *timer;
-    QMenu* trayIconMenu;
-
-    QSqlQuery *query;
-    QSqlDatabase db;
-    XMLParser* xmlParser;
-    QHttp http;
-    QXmlStreamReader xml;
-    int connectionId;
-    QUrl url;
-    QString feed;
-    QSystemTrayIcon* trayIcon;
-    QProgressDialog* progressDialog;
-
-    bool showUnreadAndReadFeeds;
-
     void showErrorMessageAndCloseProgressDialog();
     void createTrayIcon();
     void showSystemTrayIconMessage();
+    QTextEdit showAllFeedsInRssView();
+    QTextEdit showFeedForSelectedUrlInRssView(QUrl url);
+
+    Ui::MainWindow* ui;
+
+    QAction* _deleteAct;
+    QAction* _updateAct;
+    QAction* _quitAction;
+
+    QTimer* _timer;
+    QMenu* _trayIconMenu;
+
+    QSqlQuery* _query;
+    QSqlDatabase _db;
+
+    XMLParser* _xmlParser;
+    QHttp _http;
+    int _connectionId;
+    QXmlStreamReader _xml;
+    QUrl _url;
+
+    QSystemTrayIcon* _trayIcon;
+    QProgressDialog* _progressDialog;
+
+    bool _showUnreadAndReadFeeds;
 
 private slots:
     void on_searchButton_clicked();
@@ -69,11 +72,11 @@ private slots:
     void finished(int id, bool error);
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
     void updateRss();
-    void downloadFeedProgress(int done, int total);
     void showContextMenu(QPoint eventPosition);
     void deleteFeed();
     void showAllFeeds();
     void showOnlyUnreadFeeds();
+    void showAbout();
 };
 
 #endif // MAINWINDOW_H
