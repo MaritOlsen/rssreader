@@ -140,7 +140,8 @@ void MainWindow::addUrl(QUrl stringUrl)
 
 void MainWindow::on_deleteButton_clicked()
 {
-    QUrl url(ui->urlEdit->text());
+    //QUrl url(ui->urlEdit->text());
+    QUrl url(ui->treeWidget->currentItem()->text(0));
     deleteUrl(url);
 }
 
@@ -158,6 +159,7 @@ void MainWindow::deleteUrl(QUrl stringUrl)
 
 void MainWindow::updateTreeview()
 {
+    QTreeWidgetItem *item = ui->treeWidget->currentItem();
     ui->treeWidget->clear();
 
     query->exec("SELECT DISTINCT url, COUNT(unread) FROM Feed group by url");
