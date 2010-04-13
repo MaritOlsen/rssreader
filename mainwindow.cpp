@@ -40,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateRss()));
-    timer->start(300000);
+    timer->start(1800000);
 
     connect(ui->treeWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
     ui->treeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -152,7 +152,6 @@ void MainWindow::deleteFeed()
 
 void MainWindow::updateTreeview()
 {
-    QTreeWidgetItem *item = ui->treeWidget->currentItem();
     ui->treeWidget->clear();
 
     query->exec("SELECT DISTINCT url, COUNT(unread) FROM Feed group by url");
@@ -162,6 +161,7 @@ void MainWindow::updateTreeview()
 
     while (query->next()) {
         QTreeWidgetItem * widgetItem = new QTreeWidgetItem(widgetItemAll);
+        widgetItem->setToolTip(0, query->value(0).toString());
         widgetItem->setText(0, query->value(0).toString());
         widgetItem->setText(1, query->value(1).toString());
     }
